@@ -38,7 +38,7 @@ fi
 newline
 
 
-echo "Press reset on your Picade then any key to continue..."
+success "Press reset on your Picade, updating will continue automatically..."
 
 echo ""
 
