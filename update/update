@@ -1,0 +1,60 @@
+#!/bin/bash
+
+success () {
+	echo "$(tput setaf 2)$1$(tput sgr0)"
+}
+
+warning () {
+	echo "$(tput setaf 1)$1$(tput sgr0)"
+}
+
+newline () {
+	echo ""
+}
+
+apt_pkg_req () {
+	APT_CHK=$(dpkg-query -W --showformat='${Status}\n' $1|grep "install ok installed")
+	if [ "" == "$APT_CHK" ]; then
+		true
+	else
+		false
+	fi
+}
+
+success "Picade Updater. Version 1.0 Beta"
+
+newline
+
+echo "Checking for required packages..."
+
+if apt_pkg_req "avrdude"; then
+    echo "- avrdude missing, installing..."
+    sudo apt-get update
+    sudo apt-get --force-yes --yes install avrdude
+else
+    success "- avrdude already installed."
+fi
+
+newline
+
+
+echo "Press reset on your Picade then any key to continue..."
+
+echo ""
+
+if [ -e /dev/ttyACM0 ]; then
+while [ -e /dev/ttyACM0 ];
+	do
+		sleep 0.01
+	done
+fi
+
+while [ ! -e /dev/ttyACM0 ];
+do
+	sleep 0.01
+done
+
+sleep 0.5
+
+#stty -F /dev/ttyACM0 1200
+avrdude -D -c avr109 -p m32u4 -P /dev/ttyACM0 -U flash:w:picade.hex
