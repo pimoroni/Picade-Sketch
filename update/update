@@ -37,13 +37,14 @@ fi
 
 newline
 
-
-success "Press reset on your Picade, updating will continue automatically..."
+success "Updating should continue automatically."
+success "If not, press reset on your Picade."
 
 echo ""
 
 if [ -e /dev/ttyACM0 ]; then
-while [ -e /dev/ttyACM0 ];
+	stty -F /dev/ttyACM0 1200
+	while [ -e /dev/ttyACM0 ];
 	do
 		sleep 0.01
 	done
@@ -56,5 +57,4 @@ done
 
 sleep 0.5
 
-#stty -F /dev/ttyACM0 1200
 avrdude -D -c avr109 -p m32u4 -P /dev/ttyACM0 -U flash:w:picade.hex
