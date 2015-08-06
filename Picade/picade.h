@@ -1,4 +1,5 @@
 #include <arduino.h>
+#include <EEPROM.h>
 
 /*
  * There are 32 discrete gain settings from +24dB maximum to -80dB minimum
@@ -44,12 +45,16 @@ typedef struct
   char    key;      // keycode to emit when input is pressed
   char    pin;      // Arduino pin number for this input
   boolean state;    // what state was the input last in ( HIGH/LOW )
+  unsigned long last_change;
 } input;
 
 volatile int volume_current  = 0;
 int volume_target   = 0;
 int volume_saved    = 0;
 int volume_eeprom   = 0;
+
+unsigned long last_vol_up_time = 0;
+unsigned long last_vol_dn_time = 0;
 
 boolean last_vol_up    = 0;
 boolean last_vol_dn    = 0;
@@ -66,12 +71,20 @@ void volume_target_load(){
 
 void volume_up(){
   if(volume_current == 31) return;
-  volume_current++;digitalWrite(AMP_UP, LOW);delay(VOL_DELAY);digitalWrite(AMP_UP, HIGH);delay(VOL_DELAY);
+  volume_current++;
+  digitalWrite(AMP_UP, LOW);
+  delay(VOL_DELAY);
+  digitalWrite(AMP_UP, HIGH);
+  delay(5);
 };
 
 void volume_down(){ 
   if(volume_current == 0) return;
-  volume_current--;digitalWrite(AMP_DN, LOW);delay(VOL_DELAY);digitalWrite(AMP_DN, HIGH);delay(VOL_DELAY);
+  volume_current--;
+  digitalWrite(AMP_DN, LOW);
+  delay(VOL_DELAY);
+  digitalWrite(AMP_DN, HIGH);
+  delay(5);
 };
 
 void volume_fade(int level){
@@ -90,31 +103,16 @@ void volume_fade(int level){
   
 }
 
-/*
-void volume_fade(int level){
-  int transition_steps = abs(volume_current - level);
-  int transition_delay = 0;
-  if(transition_steps >= 1) transition_delay += VOL_DELAY;
-  if(transition_steps >= 2) transition_delay += VOL_DELAY*10;
-  if(transition_steps >  2) transition_delay += VOL_DELAY*4*(transition_steps-2);
-  
-  if(level < volume_current){
-    digitalWrite(AMP_DN, LOW);
-    delay(transition_delay);
-    digitalWrite(AMP_DN, HIGH);
-  }
- 
-  if(level > volume_current){
-    digitalWrite(AMP_UP, LOW);
-    delay(transition_delay);
-    digitalWrite(AMP_UP, HIGH);
-  }
-  volume_current = level;
-}*/
-
 void volume_reset(){
-  volume_current = 0;
-  digitalWrite(AMP_DN, LOW);
-  delay(140);  // Total time required for a complete drop from max volume: 1+10+(4*30)
-  digitalWrite(AMP_DN, HIGH);
+  volume_current=34;
+  while(volume_current > 0){
+    volume_down();
+  }
 }
+
+void load_volume_from_eeprom(){
+  volume_reset();
+  volume_target = EEPROM.read(0) & 0b00011111;
+  volume_eeprom = volume_target;
+}
+
