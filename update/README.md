@@ -10,6 +10,19 @@ For use with 2015 Picade boards only.
 
 ##Updating
 
+( If your Picade is connected to your network, and you know how to use SSH, you can do that instead )
+
+### Get to the shell
+* Plug a keyboard into your Picade.
+* Press your mapped "Start" button.
+* Go to Quit
+* Go to Quit Emulationstation
+
+### Run the updater
+If you've already cloned the updater, cd into the update folder and use `git pull` to update it. Otherwise:
+
+* git clone https://github.com/pimoroni/Picade-Sketch
+* cd into `picade-sketch/update`
 * Run ./update
 * avrdude will be automatically installed if it's missing.
 * The updater should auto-reset your Picade PCB and continue
