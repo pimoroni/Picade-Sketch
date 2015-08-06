@@ -17,6 +17,7 @@ For use with 2015 Picade boards only.
 * Press your mapped "Start" button.
 * Go to Quit
 * Go to Quit Emulationstation
+* Answer yes, and make sure to press a button to prevent it relaunching
 
 ### Run the updater
 If you've already cloned the updater, cd into the update folder and use `git pull` to update it. Otherwise:
