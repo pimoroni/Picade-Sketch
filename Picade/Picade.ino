@@ -1,6 +1,7 @@
 #include "picade.h"
 #include "TimerOne.h"
 #include <EEPROM.h>
+#include <Keyboard.h>
 
 /* Comment out this line if you want to bind the volume buttons to keys */
 #define ENABLE_VOLUME_BUTTONS
