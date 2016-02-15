@@ -64,10 +64,6 @@ void setup() {
   load_volume_from_eeprom();
 #endif
 
-#ifndef ENABLE_VOLUME_BUTTONS
-  volume_target = 31;
-#endif
-
   Timer1.initialize(5000);
   Timer1.attachInterrupt(update);
   Timer1.start();

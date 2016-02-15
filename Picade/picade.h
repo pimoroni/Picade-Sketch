@@ -50,7 +50,7 @@ typedef struct
 } input;
 
 volatile int volume_current  = 0;
-int volume_target   = 0;
+int volume_target   = VOL_MAX;
 int volume_saved    = 0;
 int volume_eeprom   = 0;
 
