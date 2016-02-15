@@ -6,6 +6,7 @@
  * On power up the gain is set to a default of 12dB
  */
 #define VOL_DELAY  40
+#define VOL_MAX 24
 
 /* Buttons & Joystick */
 
@@ -13,7 +14,7 @@
 #define BTN_2      A4  // PF1
 #define BTN_3      A3  // PF4
 #define BTN_4      A2  // PF5
-#define BTN_5      A1  // PF6
+#define BTN_5      A1  // PF6 
 #define BTN_6      A0  // PF7
 
 #define LEFT       10  // PB6
@@ -66,11 +67,11 @@ void volume_target_save(){
 
 void volume_target_load(){
   volume_target = volume_saved;
-  if( volume_target > 31 ) volume_target = 31;
+  if( volume_target > VOL_MAX ) volume_target = VOL_MAX;
 }
 
 void volume_up(){
-  if(volume_current == 31) return;
+  if(volume_current == VOL_MAX) return;
   volume_current++;
   digitalWrite(AMP_UP, LOW);
   delay(VOL_DELAY);
