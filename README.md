@@ -6,7 +6,7 @@ This is the default firmware for the Picade;
 * Maps the 4 joystick directions to Up, Down, Left and Right keys
 * Uses the volume up/down to control the Amp volume
 
-# Custom Keybinding
+## Custom Keybinding
 
 You can customise your key bindings to your preference, or to use multiple Picade boards together for a larger arcade cabinet project or multiplayer.
 
@@ -15,6 +15,10 @@ To create a custom keybinding you should only need to change the inputs mapping 
 A list of modifier key constants can be found here: https://www.arduino.cc/en/Reference/KeyboardModifiers
 
 Other keys can be represented as a single character, like space `' '` or x `'x'`.
+
+# Picade Megadrive Sketch
+
+This is a custom Picade firmware designed to run two classic SEGA Megadrive controllers ad translate button presses into keyboard input.
 
 # Using These Files
 
