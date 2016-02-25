@@ -8,6 +8,12 @@ Don't use this method to update your Picade PCB with any other firmware unless y
 
 For use with 2015 Picade boards only.
 
+##Firmware Files
+
+* picade.hex - Original (stable) Picade 2015 firmware
+* picade_2016.hex - Cutting-edge, reconfigurable Keyboard/Gamepad firmware
+* picade_gamepad.hex - Gamepad-only firmware
+
 ##Updating
 
 ( If your Picade is connected to your network, and you know how to use SSH, you can do that instead )
