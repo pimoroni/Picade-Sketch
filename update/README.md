@@ -1,12 +1,10 @@
 #Picade Updater
 
-This is a BETA release of the Picade updater. It's been tested on a few units so far, but use with caution.
+The supplied `picade.hex` hex file will always be the latest stable build of the Picade software.
 
-The supplied hex file will always be the latest build of the Picade software.
+Don't use this method to update your Picade PCB with any other firmware other than the ones we supply, unless you're equipepd to recover the bootloader!
 
-Don't use this method to update your Picade PCB with any other firmware unless you're equipepd to recover the bootloader!
-
-For use with 2015 Picade boards only.
+*For use with 2015 Picade boards only.*
 
 ##Firmware Files
 
@@ -30,10 +28,12 @@ If you've already cloned the updater, cd into the update folder and use `git pul
 
 * git clone https://github.com/pimoroni/Picade-Sketch
 * cd into `picade-sketch/update`
-* Run ./update
+* Run `./update`
 * avrdude will be automatically installed if it's missing.
 * The updater should auto-reset your Picade PCB and continue
 * If it doesn't, press Reset on your Picade and cross your fingers
+
+You can flash an alternate firmware by running `./update filename.hex`
 
 ##Changed in this build
 
