@@ -45,7 +45,8 @@ success "If not, press reset on your Picade."
 echo ""
 
 if [ -e /dev/ttyACM0 ]; then
-	stty -F /dev/ttyACM0 1200
+#	stty -F /dev/ttyACM0 1200
+	python -c "import serial;s=serial.Serial('/dev/ttyACM0',1200);s.setRTS(True);s.setDTR(False);s.close()"
 	while [ -e /dev/ttyACM0 ];
 	do
 		sleep 0.01
