@@ -25,6 +25,8 @@ success "Picade Updater. Version 1.0 Beta"
 
 newline
 
+FIRMWARE=${1:-picade.hex}
+
 echo "Checking for required packages..."
 
 if apt_pkg_req "avrdude"; then
@@ -57,4 +59,4 @@ done
 
 sleep 0.5
 
-avrdude -D -c avr109 -p m32u4 -P /dev/ttyACM0 -U flash:w:picade.hex
+avrdude -D -c avr109 -p m32u4 -P /dev/ttyACM0 -U flash:w:$FIRMWARE
