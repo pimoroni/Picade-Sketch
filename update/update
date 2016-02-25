@@ -37,6 +37,14 @@ else
     success "- avrdude already installed."
 fi
 
+if apt_pkg_req "python-serial"; then
+    echo "- python-serial missing, installing..."
+    sudo apt-get update
+    sudo apt-get --force-yes --yes install python-serial
+else
+    success "- python-serial already installed."
+fi
+
 newline
 
 success "Updating should continue automatically."
