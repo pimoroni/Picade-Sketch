@@ -1,20 +1,20 @@
 # Picade Sketch
 
-This is the default firmware for the Picade;
+This is the 2.x firmware for the Picade;
 
-* Maps each of the 10 main input buttons to key presses
-* Maps the 4 joystick directions to Up, Down, Left and Right keys
-* Uses the volume up/down to control the Amp volume
+* Fully user configurable keybindings over Serial
+* Two soft Alt states for bonus keys
+* Keyboard emulation
+* Gamepad emulation with 3 axis and 16 buttons
+* Serial volume control
+
+You can find the 1.x firmware which ships on all Picade PCBs here: https://github.com/pimoroni/Picade-Sketch/tree/v1.x
 
 ## Custom Keybinding
 
-You can customise your key bindings to your preference, or to use multiple Picade boards together for a larger arcade cabinet project or multiplayer.
+You can use either PuTTY, Arduino Serial Monitor or the supplied Python library to set and save custom key configurations to your Picade PCB. These are stored in EEPROM and preserved during power up.
 
-To create a custom keybinding you should only need to change the inputs mapping at the top of the Sketch.
-
-A list of modifier key constants can be found here: https://www.arduino.cc/en/Reference/KeyboardModifiers
-
-Other keys can be represented as a single character, like space `' '` or x `'x'`.
+See the release forum thread for more information: http://forums.pimoroni.com/t/experimental-configurable-keyboard-gamepad-firmware/1881
 
 # Picade Megadrive Sketch
 
