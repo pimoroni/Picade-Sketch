@@ -33,10 +33,14 @@ GAMEPAD_UP    = 220
 GAMEPAD_DOWN  = 221
 GAMEPAD_LEFT  = 222
 GAMEPAD_RIGHT = 223
+GAMEPAD_ZPOS  = 224
+GAMEPAD_ZNEG  = 225
 
 for x in range(16):
     globals()['GAMEPAD_' + str(x+1)] = 230 + x
 
+ALT_1  = 252
+ALT_2  = 253
 
 VOL_UP = 250
 VOL_DN = 251
@@ -76,6 +80,8 @@ KEY_F9 		= 202
 KEY_F10 	= 203
 KEY_F11 	= 204
 KEY_F12 	= 205
+
+VALID_EVENTS    = range(13,255)
 
 def read_response():
     response = ""
@@ -118,12 +124,24 @@ def save():
 def load():
     command('l')
 
-def bind(button, event=None):
+def bind(button, event=None, alt1=None, alt2=None):
     if type(button) is list:
         events = ' '.join(map(str, button))
         command("a {events}".format(events=events))
         return read_response()
 
-    if button in range(19) and event in range(13,252):
-        command("b {button} {event}".format(button=button, event=event))
+    if button in range(19) and event in VALID_EVENTS:
+        if alt1 is None or alt1 not in VALID_EVENTS:
+            alt1 = ''
+
+        if alt2 is None or alt2 not in VALID_EVENTS:
+            alt2 = ''
+
+        command("b {button} {event} {alt1} {alt2}".format(
+            button=button,
+            event =event,
+            alt1  =alt1,
+            alt2  =alt2
+        ).strip())
+
     return read_response()
