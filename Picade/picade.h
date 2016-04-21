@@ -15,22 +15,22 @@
 
 /* Buttons & Joystick */
 
-#define BTN_1      A5  // PF0
-#define BTN_2      A4  // PF1
-#define BTN_3      A3  // PF4
-#define BTN_4      A2  // PF5
-#define BTN_5      A1  // PF6 
-#define BTN_6      A0  // PF7
+#define BTN_1      A5  // PF0  ADC0
+#define BTN_2      A4  // PF1  ADC1
+#define BTN_3      A3  // PF4  ADC4
+#define BTN_4      A2  // PF5  ADC5
+#define BTN_5      A1  // PF6  ADC6
+#define BTN_6      A0  // PF7  ADC7
 
-#define LEFT       10  // PB6
-#define RIGHT       9  // PB5
-#define UP          6  // PD7
-#define DOWN        8  // PB4
+#define LEFT       10  // PB6  ADC13
+#define RIGHT       9  // PB5  ADC12
+#define UP          6  // PD7  ADC10
+#define DOWN        8  // PB4  ADC11
 
 /* System Controls */
 
-#define START      12  // PD6
-#define COIN        4  // PD4      (1/4) on silk
+#define START      12  // PD6  ADC9
+#define COIN        4  // PD4  ADC8   (1/4) on silk
 #define ESCAPE      1  // PD3/TX
 #define ENTER       0  // PD2/RX    1UP on silk
 
