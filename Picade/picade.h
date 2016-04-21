@@ -22,10 +22,11 @@
 #define BTN_5      A1  // PF6  ADC6
 #define BTN_6      A0  // PF7  ADC7
 
-#define LEFT       10  // PB6  ADC13
-#define RIGHT       9  // PB5  ADC12
-#define UP          6  // PD7  ADC10
-#define DOWN        8  // PB4  ADC11
+// DigitalRead understands Analog Pin names, but AnalogRead doesn't understand digital pin names =/ At least not in the case of AnalogRead(6)
+#define LEFT       A10 // PB6  ADC13
+#define RIGHT      A9  // PB5  ADC12
+#define UP         A7  // PD7  ADC10
+#define DOWN       A8  // PB4  ADC11
 
 /* System Controls */
 
@@ -49,6 +50,11 @@
 #define MISO 14
 #define SCLK 15
 #define MOSI 16
+
+#define JOY1_X 246
+#define JOY1_Y 247
+#define JOY2_X 248
+#define JOY2_Y 249
 
 #define ACT_VOL_UP 250
 #define ACT_VOL_DN 251
@@ -109,7 +115,7 @@ typedef struct
 
 typedef struct
 {
-  boolean state;    // what state was the input last in ( HIGH/LOW )
+  uint8_t state;    // what state was the input last in ( HIGH/LOW )
   unsigned long last_change;
 } button_state;
 
@@ -131,7 +137,9 @@ unsigned long last_vol_dn_time = 0;
 
 boolean last_vol_up    = 0;
 boolean last_vol_dn    = 0;
-boolean last_headphone = 0;
+boolean last_headphone = 1;
+
+unsigned long last_headphone_time = 0;
 
 void volume_target_save(){
   volume_saved = volume_target;
@@ -277,6 +285,13 @@ void picade_help(){
         Serial.print(JOYSTICK_X_POS);Serial.print(F(" = Gpad R   "));
         Serial.print(JOYSTICK_Z_POS);Serial.print(F(" = Gpad Z+  "));
         Serial.print(JOYSTICK_Z_NEG);Serial.print(F(" = Gpad Z-  "));
+
+        Serial.println();
+
+        Serial.print(JOY1_X);Serial.print(F(" = Joy 1 X  "));
+        Serial.print(JOY1_Y);Serial.print(F(" = Joy 1 Y  "));
+        Serial.print(JOY2_X);Serial.print(F(" = Joy 2 X  "));
+        Serial.print(JOY2_Y);Serial.print(F(" = Joy 2 Y  "));
         
         Serial.println();
 

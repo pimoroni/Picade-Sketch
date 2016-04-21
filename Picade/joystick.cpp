@@ -23,7 +23,7 @@
 #if defined(_USING_HID)
 
 #define JOYSTICK_REPORT_ID   0x03
-#define JOYSTICK_STATE_SIZE  5 // bytes - 8 buttons + 8 buttons + x axis + y axis + z axis
+#define JOYSTICK_STATE_SIZE  6 // bytes - 8 buttons + 8 buttons + x axis + y axis + z axis
 
 static const uint8_t _hidReportDescriptor[] PROGMEM = {
     0x05, 0x01,               // USAGE_PAGE (Generic Desktop)
@@ -48,16 +48,17 @@ static const uint8_t _hidReportDescriptor[] PROGMEM = {
     0x09, 0x01,               //   USAGE (Pointer)
     0x15, 0x81,               //   LOGICAL_MINIMUM (-127)
     0x25, 0x7f,               //   LOGICAL_MAXIMUM (127)
+    
     0xA1, 0x00,               //   COLLECTION (Physical)
     0x09, 0x30,               //     USAGE (x)
     0x09, 0x31,               //     USAGE (y)
-    0x09, 0x32,               //     USAGE (z)
+    0x09, 0x33,               //     USAGE (Rx)
+    0x09, 0x34,               //     USAGE (Ry)
     0x75, 0x08,               //     REPORT_SIZE (8)
-    0x95, 0x03,               //     REPORT_COUNT (3)
+    0x95, 0x04,               //     REPORT_COUNT (4)
     0x81, 0x02,               //     INPUT (Data,Var,Abs)
-
-    
     0xc0,                     //   END_COLLECTION
+    
     0xc0,                     // END_COLLECTION
 };
 
@@ -69,7 +70,8 @@ Joystick_::Joystick_()
     // Initalize State
     xAxis = 0;
     yAxis = 0;
-    zAxis = 0;
+    x2Axis = 0;
+    y2Axis = 0;
     buttons = 0;
 }
 
@@ -102,10 +104,19 @@ void Joystick_::setYAxis(int8_t value)
 {
     yAxis = value;
 }
-void Joystick_::setZAxis(int8_t value)
+
+void Joystick_::setX2Axis(int8_t value)
+{
+    x2Axis = value;
+}
+void Joystick_::setY2Axis(int8_t value)
+{
+    y2Axis = value;
+}
+/*void Joystick_::setZAxis(int8_t value)
 {
     zAxis = value;
-}
+}*/
 
 void Joystick_::sendReport()
 {
@@ -119,7 +130,8 @@ void Joystick_::sendReport()
 
     data[2] = xAxis;
     data[3] = yAxis;
-    data[4] = zAxis;
+    data[4] = x2Axis;
+    data[5] = y2Axis;
     
     /*
      * Report Number

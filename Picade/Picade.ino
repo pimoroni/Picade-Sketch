@@ -16,6 +16,23 @@ const uint8_t picade_pins[] = {UP, DOWN, LEFT, RIGHT, BTN_1, BTN_2, BTN_3, BTN_4
 
 const uint8_t quickbind_keyboard[] = {KEY_UP_ARROW,KEY_DOWN_ARROW,KEY_LEFT_ARROW,KEY_RIGHT_ARROW,KEY_LEFT_CTRL,KEY_LEFT_ALT,' ',KEY_LEFT_SHIFT,'z','x','s','c',KEY_RETURN,KEY_ESC,ACT_VOL_UP,ACT_VOL_DN,'i','o','p'};
 
+const uint8_t quickbind_dualanalog[] = {JOY2_X,JOY2_Y,JOY1_X,JOY1_Y,
+    JOYSTICK_BUTTON_START,
+    JOYSTICK_BUTTON_START+1,
+    JOYSTICK_BUTTON_START+2,
+    JOYSTICK_BUTTON_START+3,
+    JOYSTICK_BUTTON_START+4,
+    JOYSTICK_BUTTON_START+5,
+    JOYSTICK_BUTTON_START+6,
+    JOYSTICK_BUTTON_START+7,
+    JOYSTICK_BUTTON_START+8,
+    JOYSTICK_BUTTON_START+9,
+    JOYSTICK_BUTTON_START+10,
+    JOYSTICK_BUTTON_START+11,
+    JOYSTICK_BUTTON_START+12,
+    JOYSTICK_BUTTON_START+13,
+    JOYSTICK_BUTTON_START+14};
+
 const uint8_t quickbind_gamepad[] = {JOYSTICK_Y_NEG,JOYSTICK_Y_POS,JOYSTICK_X_NEG,JOYSTICK_X_POS,
     JOYSTICK_BUTTON_START,
     JOYSTICK_BUTTON_START+1,
@@ -57,6 +74,7 @@ picade_config default_config = {
     {'o'},
     {'p'}
   },
+  0, // Shift State
   VOL_DEFAULT
 };
 
@@ -118,7 +136,15 @@ void update(void){
   for(int i = 0; i < PICADE_BUTTON_COUNT; i++)
   {
     // test for current state of this input
-    boolean state = !digitalRead(picade_pins[i]);
+    uint8_t state = !digitalRead(picade_pins[i]);
+
+    // read an analog value instead of digital for our magical analog bindings
+    if( default_config.buttons[i].key == JOY1_X
+     || default_config.buttons[i].key == JOY1_Y
+     || default_config.buttons[i].key == JOY2_X
+     || default_config.buttons[i].key == JOY2_Y ){
+      state = map(analogRead(picade_pins[i]),0,1023,0,254);
+    }
 
     if(state != button_states[i].state && (millis() - button_states[i].last_change) > DEBOUNCE_DELAY) // has this input changed state since the last time we checked?
     {
@@ -126,21 +152,13 @@ void update(void){
       button_states[i].last_change = millis();
       
       if(handle_key(i, state)){changed=true;}
-
-      /*Serial.print("Event: ");
-      Serial.print(state);
-      Serial.print(" idx: ");
-      Serial.print(i);
-      Serial.print(" key: ");
-      Serial.print(default_config.buttons[i]);
-      Serial.println("");*/
     }
   }
   
   if(changed) Joystick.sendReport();
 }
 
-bool handle_key(uint8_t i, bool state){
+bool handle_key(uint8_t i, uint8_t state){
   uint8_t key = default_config.buttons[i].key;
 
   // If shift state ALT_1 is enabled, use the alt_1 keybind
@@ -188,7 +206,27 @@ bool handle_key(uint8_t i, bool state){
        bitWrite(shift_state, BIT_ALT_2, state);
     }
   }
-  
+
+  if( key == JOY1_X ){
+    Joystick.setXAxis(state - 127);
+    return true;
+  }
+ 
+  if( key == JOY1_Y ){
+    Joystick.setYAxis(state - 127);
+    return true;
+  }
+ 
+  if( key == JOY2_X ){
+    Joystick.setX2Axis(state - 127);
+    return true;
+  }
+ 
+  if( key == JOY2_Y ){
+    Joystick.setY2Axis(state - 127);
+    return true;
+  }
+    
   if(key >= JOYSTICK_START){
     // Joystick Axis or Button
     switch(key){
@@ -205,10 +243,10 @@ bool handle_key(uint8_t i, bool state){
         Joystick.setYAxis(-127 * state);
         return true;
       case JOYSTICK_Z_POS:
-        Joystick.setZAxis(127 * state);
+        Joystick.setX2Axis(127 * state);
         return true;
       case JOYSTICK_Z_NEG:
-        Joystick.setZAxis(-127 * state);
+        Joystick.setX2Axis(-127 * state);
         return true;
       default:
         if( key >= JOYSTICK_BUTTON_START ){
@@ -290,6 +328,12 @@ void loop() {
           default_config.buttons[x].key = quickbind_gamepad[x];
         }
         Serial.println(F("Loaded Gamepad"));
+        break;
+      case 'n': // Quick Gamepad Bind
+        for( int x = 0; x < PICADE_BUTTON_COUNT; x++){
+          default_config.buttons[x].key = quickbind_dualanalog[x];
+        }
+        Serial.println(F("Loaded Dual Analog"));
         break;
       case 'd':
         Serial.print('a');
@@ -405,14 +449,17 @@ void loop() {
    * Save the target volume and set it to 0 to fade out.
    * Load the saved value into the target volume to fade back in.
    */
-  if(headphone != last_headphone){
+  if(headphone != last_headphone && millis() - last_headphone_time > 1000){
     last_headphone = headphone;
+    last_headphone_time = millis();
     if(headphone){
+      Serial.println(F("\nHeadphones Detected"));
       volume_target_save();
       volume_target = 0;
     }
     else
     {
+      Serial.println(F("\nHeadphones Removed"));
       volume_target_load();
     }
   }

@@ -34,7 +34,8 @@ class Joystick_
 private:
   int8_t   xAxis;
   int8_t   yAxis;
-  int8_t   zAxis;
+  int8_t   x2Axis;
+  int8_t   y2Axis;
   uint16_t buttons;
 
 public:
@@ -45,7 +46,9 @@ public:
 
   void setXAxis(int8_t value);
   void setYAxis(int8_t value);
-  void setZAxis(int8_t value);
+  void setX2Axis(int8_t value);
+  void setY2Axis(int8_t value);
+  //void setZAxis(int8_t value);
 
   void setButton(uint8_t button, uint8_t value);
 
