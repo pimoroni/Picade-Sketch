@@ -73,7 +73,7 @@
 
 #define JOYSTICK_BUTTON_START 230
 
-#define CONFIG_VERSION "Picade v2.2"
+#define CONFIG_VERSION "Picade b2.3"
 #define CONFIG_VERSION_SIZE 12
 
 #define BIT_ALT_1 0
@@ -150,6 +150,39 @@ void volume_target_load(){
   if( volume_target > VOL_MAX ) volume_target = VOL_MAX;
 }
 
+void headphone_detect(){
+  /*
+     Read the current states of the Volume Up, Volume Down and Headphone Detect inputs
+  */
+  boolean headphone = !digitalRead(HEADPHONE_DETECT);
+
+  /*
+     If headphones are unpugged/plugged in then adjust the volume accordingly.
+     Save the target volume and set it to 0 to fade out.
+     Load the saved value into the target volume to fade back in.
+  */
+  if (headphone != last_headphone){
+    delay(25);
+     if((!digitalRead(HEADPHONE_DETECT)) == headphone){
+      if(millis() - last_headphone_time > 1000) {
+        last_headphone = headphone;
+        last_headphone_time = millis();
+        if (headphone) {
+          Serial.println(F("Headphones Detected, Vol: 0"));
+          volume_target_save();
+          volume_target = 0;
+        }
+        else
+        {
+          volume_target_load();
+          Serial.print(F("Headphones Removed, Vol:"));
+          Serial.println(volume_target);
+        }
+      }
+    }
+  }
+}
+
 void volume_up(){
   if(volume_current == VOL_MAX) return;
   volume_current++;
@@ -175,6 +208,8 @@ void volume_init(){
   digitalWrite(AMP_DN, HIGH);
 
   pinMode(HEADPHONE_DETECT, INPUT);
+
+  last_headphone = !digitalRead(HEADPHONE_DETECT);
 }
 
 void volume_track(){
