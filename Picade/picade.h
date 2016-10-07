@@ -6,6 +6,7 @@
  * There are 32 discrete gain settings from +24dB maximum to -80dB minimum
  * On power up the gain is set to a default of 12dB
  */
+#define VOL_SAVE_FREQ 2000 // Save frequency in milliseconds
 #define VOL_DELAY  40
 #define VOL_DEFAULT 20
 #define VOL_MAX 24
@@ -150,6 +151,10 @@ void volume_target_load(){
   if( volume_target > VOL_MAX ) volume_target = VOL_MAX;
 }
 
+int volume_target_reached(){
+  return (volume_target == volume_current);
+}
+
 void headphone_detect(){
   /*
      Read the current states of the Volume Up, Volume Down and Headphone Detect inputs
@@ -255,11 +260,9 @@ void volume_reset(){
   }
 }
 
-void load_volume(uint8_t volume){
+void volume_set(uint8_t volume){
   volume_reset();
   volume_target = volume;
-  //volume_target = EEPROM.read(0) & 0b00011111;
-  //volume_eeprom = volume_target;
 }
 
 

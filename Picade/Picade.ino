@@ -99,6 +99,20 @@ void load_config() {
   }
 }
 
+void save_volume() {
+  static int last_saved_value;
+  static unsigned long last_saved_time;
+
+  if(last_saved_value != default_config.volume && millis() - last_saved_time > VOL_SAVE_FREQ){
+    Serial.print(F("Saving Volume: "));
+    Serial.println(default_config.volume);
+    EEPROM_write(CONFIG_START + sizeof(picade_config) - 1, default_config.volume);
+
+    last_saved_time = millis();
+    last_saved_value = default_config.volume;
+  }
+}
+
 void save_config() {
   Serial.println(F("Saving Config!"));
 
@@ -122,7 +136,7 @@ void setup() {
 
   volume_init();
 
-  load_volume(default_config.volume);
+  volume_set(default_config.volume);
 
   Timer1.initialize(5000);
   Timer1.attachInterrupt(update);
@@ -134,15 +148,18 @@ void update(void) {
   // loop through each input
   for (int i = 0; i < PICADE_BUTTON_COUNT; i++)
   {
+    uint8_t state;
     // test for current state of this input
-    uint8_t state = !digitalRead(picade_pins[i]);
-
     // read an analog value instead of digital for our magical analog bindings
     if ( default_config.buttons[i].key == JOY1_X
          || default_config.buttons[i].key == JOY1_Y
          || default_config.buttons[i].key == JOY2_X
          || default_config.buttons[i].key == JOY2_Y ) {
       state = map(analogRead(picade_pins[i]), 0, 1023, 0, 254);
+    }
+    else
+    {
+      state = !digitalRead(picade_pins[i]);
     }
 
     if (state != button_states[i].state && (millis() - button_states[i].last_change) > DEBOUNCE_DELAY) // has this input changed state since the last time we checked?
@@ -452,8 +469,10 @@ void loop() {
     }
   }
 
-
   headphone_detect();
   volume_track();
+  if(volume_target_reached()){ 
+    save_volume();
+  }
 
 }
