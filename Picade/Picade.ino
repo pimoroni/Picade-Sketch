@@ -67,8 +67,8 @@ picade_config default_config = {
     {'c'},
     {KEY_RETURN},
     {KEY_ESC},
-    {'u'},
-    {'d'},
+    {ACT_VOL_UP},
+    {ACT_VOL_DN},
     {'i'},
     {'o'},
     {'p'}
