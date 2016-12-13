@@ -10,8 +10,8 @@ Don't use this method to update your Picade PCB with any other firmware other th
 
 * other/picade_original.hex - Original Picade 2015 firmware
 * other/picade_gamepad.hex - Gamepad-only firmware
-* picade.hex - v2.2 reconfigurable Keyboard/Gamepad firmware
-* picade_b2.3.hex - v2.3 beta
+* picade.hex - v2.3 LATEST reconfigurable Keyboard/Gamepad firmwarwe
+* picade_v2.2.hex - v2.2 reconfigurable Keyboard/Gamepad firmware
 
 ##Updating
 

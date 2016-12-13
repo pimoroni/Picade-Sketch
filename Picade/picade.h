@@ -74,7 +74,7 @@
 
 #define JOYSTICK_BUTTON_START 230
 
-#define CONFIG_VERSION "Picade b2.3"
+#define CONFIG_VERSION "Picade v2.3"
 #define CONFIG_VERSION_SIZE 12
 
 #define BIT_ALT_1 0
