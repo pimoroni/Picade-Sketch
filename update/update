@@ -1,56 +1,93 @@
 #!/bin/bash
 
-success () {
-	echo "$(tput setaf 2)$1$(tput sgr0)"
+: <<'DISCLAIMER'
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
+OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
+HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+OTHER DEALINGS IN THE SOFTWARE.
+
+This script is licensed under the terms of the MIT license.
+Unless otherwise noted, code reproduced herein
+was written for this script.
+
+- The Pimoroni Crew -
+
+DISCLAIMER
+
+UPDATE_DB=false
+
+success() {
+    echo -e "$(tput setaf 2)$1$(tput sgr0)"
 }
 
-warning () {
-	echo "$(tput setaf 1)$1$(tput sgr0)"
+inform() {
+    echo -e "$(tput setaf 6)$1$(tput sgr0)"
 }
 
-newline () {
-	echo ""
+warning() {
+    echo -e "$(tput setaf 1)$1$(tput sgr0)"
 }
 
-apt_pkg_req () {
-	APT_CHK=$(dpkg-query -W --showformat='${Status}\n' $1|grep "install ok installed")
-	if [ "" == "$APT_CHK" ]; then
-		true
-	else
-		false
-	fi
+newline() {
+    echo ""
 }
 
-success "Picade Updater. Version 1.1"
+progress() {
+    count=0
+    until [ $count -eq $1 ]; do
+        echo -n "..." && sleep 1
+        ((count++))
+    done
+    echo
+}
 
-newline
+sysupdate() {
+    if ! $UPDATE_DB; then
+        echo "Updating apt indexes..." && progress 3 &
+        sudo apt-get update 1> /dev/null || { warning "Apt failed to update indexes!" && exit 1; }
+        echo "Reading package lists..."
+        progress 3 && UPDATE_DB=true
+    fi
+}
+
+apt_pkg_req() {
+    APT_CHK=$(dpkg-query -W -f='${Status}\n' "$1" 2> /dev/null | grep "install ok installed")
+
+    if [ "" == "$APT_CHK" ]; then
+        echo "$1 is required"
+        true
+    else
+        echo "$1 is already installed"
+        false
+    fi
+}
+
+apt_pkg_install() {
+    echo "Installing $1..."
+    sudo apt-get --yes install "$1" 1> /dev/null || { echo -e "Apt failed to install $1!\nFalling back on pypi..." && return 1; }
+    echo
+}
+
+inform "\nPicade Updater. Version 1.1\n"
 
 FIRMWARE=${1:-picade.hex}
 
 echo "Checking for required packages..."
 
 if apt_pkg_req "avrdude"; then
-    echo "- avrdude missing, installing..."
-    sudo apt-get update
-    sudo apt-get --force-yes --yes install avrdude
-else
-    success "- avrdude already installed."
+    sysupdate && apt_pkg_install avrdude
 fi
 
 if apt_pkg_req "python-serial"; then
-    echo "- python-serial missing, installing..."
-    sudo apt-get update
-    sudo apt-get --force-yes --yes install python-serial
-else
-    success "- python-serial already installed."
+    sysupdate && apt_pkg_install python-serial
 fi
 
-newline
-
-success "Updating should continue automatically."
-success "If not, press reset on your Picade."
-
-echo ""
+inform "\nUpdating should continue automatically. \nIf not, press reset on your Picade.\n"
 
 if [ -e /dev/ttyACM0 ]; then
 #	stty -F /dev/ttyACM0 1200
@@ -61,8 +98,7 @@ if [ -e /dev/ttyACM0 ]; then
 	done
 fi
 
-while [ ! -e /dev/ttyACM0 ];
-do
+while [ ! -e /dev/ttyACM0 ]; do
 	sleep 0.01
 done
 
