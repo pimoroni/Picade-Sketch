@@ -75,8 +75,6 @@ apt_pkg_install() {
 
 inform "\nPicade Updater. Version 1.1\n"
 
-FIRMWARE=${1:-picade.hex}
-
 echo "Checking for required packages..."
 
 if apt_pkg_req "avrdude"; then
@@ -85,6 +83,30 @@ fi
 
 if apt_pkg_req "python-serial"; then
     sysupdate && apt_pkg_install python-serial
+fi
+
+if [ "$#" -eq 0 ]; then
+    echo "Please choose a firmware to flash:" && newline
+    echo "0 : standard (recommended)"
+    echo "1 : no headphone detection"
+    echo "2 : experimental (serial control)"
+    newline
+    read -r -p "Enter an option [0-2]:" choice < /dev/tty
+    if [[ $choice =~ ^(0)$ ]]; then
+        inform "\nFlashing standard firmware"
+        FIRMWARE="./fw_stable.hex"
+    elif [[ $choice =~ ^(1)$ ]]; then
+        inform "\nFlashing alternative firmware"
+        FIRMWARE="./fw_nodetect.hex"
+    elif [[ $choice =~ ^(2)$ ]]; then
+        inform "\nFlashing experimental firmware"
+        FIRMWARE="./fw_experimental.hex"
+    else
+        warning "Invalid option!" && exit 1
+    fi
+else
+    FIRMWARE=${1:-picade.hex}
+    inform "\nFlashing firmware: $FIRMWARE"
 fi
 
 inform "\nUpdating should continue automatically. \nIf not, press reset on your Picade.\n"
