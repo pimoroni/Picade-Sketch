@@ -1,4 +1,4 @@
-#Picade Updater
+# Picade Updater
 
 The supplied `picade.hex` hex file will always be the latest stable build of the Picade software.
 
@@ -6,14 +6,14 @@ Don't use this method to update your Picade PCB with any other firmware other th
 
 *For use with 2015 Picade boards only. The original Kickstarter PCB has a different pinout.*
 
- ##Firmware Files
+ ## Firmware Files
 
 * other/picade_original.hex - Original Picade 2015 firmware
 * other/picade_gamepad.hex - Gamepad-only firmware
 * picade.hex - v2.3 LATEST reconfigurable Keyboard/Gamepad firmwarwe
 * picade_v2.2.hex - v2.2 reconfigurable Keyboard/Gamepad firmware
 
-##Updating
+## Updating
 
 ( If your Picade is connected to your network, and you know how to use SSH, you can do that instead )
 
