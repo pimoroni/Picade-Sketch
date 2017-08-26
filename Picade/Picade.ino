@@ -9,9 +9,9 @@
 */
 #define DEBOUNCE_DELAY 25
 
-const uint8_t picade_pins[] = {UP, DOWN, LEFT, RIGHT, BTN_1, BTN_2, BTN_3, BTN_4, BTN_5, BTN_6, START, COIN, ENTER, ESCAPE, VOL_UP, VOL_DN, MOSI, MISO, SCLK};
+const uint8_t picade_pins[] = {UP, DOWN, LEFT, RIGHT, BTN_1, BTN_2, BTN_3, BTN_4, BTN_5, BTN_6, START, COIN, ENTER, ESCAPE, VOL_UP, VOL_DN, MOSI, MISO, SCLK, GPIO_1, GPIO_2, GPIO_3, GPIO_4, GPIO_5, GPIO_6};
 
-const uint8_t quickbind_keyboard[] = {KEY_UP_ARROW, KEY_DOWN_ARROW, KEY_LEFT_ARROW, KEY_RIGHT_ARROW, KEY_LEFT_CTRL, KEY_LEFT_ALT, ' ', KEY_LEFT_SHIFT, 'z', 'x', 's', 'c', KEY_RETURN, KEY_ESC, ACT_VOL_UP, ACT_VOL_DN, 'i', 'o', 'p'};
+const uint8_t quickbind_keyboard[] = {KEY_UP_ARROW, KEY_DOWN_ARROW, KEY_LEFT_ARROW, KEY_RIGHT_ARROW, KEY_LEFT_CTRL, KEY_LEFT_ALT, ' ', KEY_LEFT_SHIFT, 'z', 'x', 's', 'c', KEY_RETURN, KEY_ESC, ACT_VOL_UP, ACT_VOL_DN, 'i', 'o', 'p', '1', '2', '3', '4', '5', '6'};
 
 const uint8_t quickbind_dualanalog[] = {JOY2_X, JOY2_Y, JOY1_X, JOY1_Y,
                                         JOYSTICK_BUTTON_START,
@@ -28,7 +28,8 @@ const uint8_t quickbind_dualanalog[] = {JOY2_X, JOY2_Y, JOY1_X, JOY1_Y,
                                         JOYSTICK_BUTTON_START + 11,
                                         JOYSTICK_BUTTON_START + 12,
                                         JOYSTICK_BUTTON_START + 13,
-                                        JOYSTICK_BUTTON_START + 14
+                                        JOYSTICK_BUTTON_START + 14,
+                                        '1', '2', '3', '4', '5', '6'
                                        };
 
 const uint8_t quickbind_gamepad[] = {JOYSTICK_Y_NEG, JOYSTICK_Y_POS, JOYSTICK_X_NEG, JOYSTICK_X_POS,
@@ -46,7 +47,8 @@ const uint8_t quickbind_gamepad[] = {JOYSTICK_Y_NEG, JOYSTICK_Y_POS, JOYSTICK_X_
                                      JOYSTICK_BUTTON_START + 11,
                                      JOYSTICK_BUTTON_START + 12,
                                      JOYSTICK_BUTTON_START + 13,
-                                     JOYSTICK_BUTTON_START + 14
+                                     JOYSTICK_BUTTON_START + 14,
+                                     '1', '2', '3', '4', '5', '6'
                                     };
 
 /* Change key bindings below */
@@ -71,7 +73,13 @@ picade_config default_config = {
     {ACT_VOL_DN},
     {'i'},
     {'o'},
-    {'p'}
+    {'p'},
+    {'1'},
+    {'2'},
+    {'3'},
+    {'4'},
+    {'5'},
+    {'6'}
   },
   0, // Shift State
   VOL_DEFAULT

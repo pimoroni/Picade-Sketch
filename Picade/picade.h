@@ -12,29 +12,34 @@
 #define VOL_MAX 24
 
 #define CONFIG_START 8
-#define PICADE_BUTTON_COUNT 19
+#define PICADE_BUTTON_COUNT 25
 
-/* Buttons & Joystick */
+#define GPIO_1     PD6
+#define GPIO_2     PD7
+#define GPIO_3     PB4
+#define GPIO_4     PB5
+#define GPIO_5     PB6
+#define GPIO_6     PC6
 
-#define BTN_1      A5  // PF0  ADC0
-#define BTN_2      A4  // PF1  ADC1
-#define BTN_3      A3  // PF4  ADC4
-#define BTN_4      A2  // PF5  ADC5
-#define BTN_5      A1  // PF6  ADC6
-#define BTN_6      A0  // PF7  ADC7
+#define BTN_1      PF7  // PF0  ADC0
+#define BTN_2      PF6  // PF1  ADC1
+#define BTN_3      PF5  // PF4  ADC4
+#define BTN_4      PF4  // PF5  ADC5
+#define BTN_5      PF1  // PF6  ADC6
+#define BTN_6      PF0  // PF7  ADC7
 
 // DigitalRead understands Analog Pin names, but AnalogRead doesn't understand digital pin names =/ At least not in the case of AnalogRead(6)
-#define LEFT       A10 // PB6  ADC13
-#define RIGHT      A9  // PB5  ADC12
-#define UP         A7  // PD7  ADC10
-#define DOWN       A8  // PB4  ADC11
+#define LEFT       PB3  // PB6  ADC13
+#define RIGHT      PB2  // PB5  ADC12
+#define UP         PB0  // PD7  ADC10
+#define DOWN       PB1  // PB4  ADC11
 
 /* System Controls */
 
-#define START      12  // PD6  ADC9
-#define COIN        4  // PD4  ADC8   (1/4) on silk
-#define ESCAPE      1  // PD3/TX
-#define ENTER       0  // PD2/RX    1UP on silk
+#define START      PD0  // PD6  ADC9
+#define COIN       PD1  // PD4  ADC8   (1/4) on silk
+#define ESCAPE     PD2  // PD3/TX
+#define ENTER      PD3  // PD2/RX    1UP on silk
 
 /* Audio & Amplifier */
 
