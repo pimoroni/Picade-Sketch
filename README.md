@@ -16,6 +16,8 @@ You can use either PuTTY, Arduino Serial Monitor or the supplied Python library 
 
 See the release forum thread for more information: http://forums.pimoroni.com/t/experimental-configurable-keyboard-gamepad-firmware/1881
 
+And this thread for usage instructions: https://forums.pimoroni.com/t/new-2-x-configurable-keyboard-gamepad-firmware/1881
+
 # Picade Megadrive Sketch
 
 This is a custom Picade firmware designed to run two classic SEGA Megadrive controllers ad translate button presses into keyboard input.
